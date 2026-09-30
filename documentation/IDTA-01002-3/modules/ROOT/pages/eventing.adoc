@@ -396,6 +396,12 @@ Profile events are provided in addition to the events of <<eventing-modification
 [#eventing-interface-operations]
 === Operation GetAllEvents
 
+The operation _GetAllEvents_ is provided by the Event profiles of the
+xref:http-rest-api/service-specifications-and-profiles.adoc#asset-administration-shell-repository-service-specification-ssp-007[Asset Administration Shell Repository],
+xref:http-rest-api/service-specifications-and-profiles.adoc#submodel-repository-service-specification-ssp-008[Submodel Repository],
+xref:http-rest-api/service-specifications-and-profiles.adoc#concept-description-repository-service-specification-ssp-004[Concept Description Repository], and
+xref:http-rest-api/service-specifications-and-profiles.adoc#discovery-service-specification-ssp-003[Discovery] service specifications.
+
 [.table-with-appendix-table]
 [width=100%,cols="25%,35%,10%,20%,10%"]
 |===
@@ -412,15 +418,14 @@ e|idShortPath a|Return SubmodelElement and profile events of the SubmodelElement
 e|globalAssetId a|Return events whose `globalAssetIds` contain the given value |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
 e|semanticId a|Return Submodel and SubmodelElement events of objects with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
 e|submodelSemanticId a|Return Submodel, SubmodelElement, and profile events of Submodels with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
-e|timeFrom a|Return events with a `time` at or after the given date |no |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |0..1
-e|lastEventId a|Return events provided after the event with the given `id` |no |string |0..1
+e|timeFrom a|Return events with a `time` at or after the given date; shall not be combined with `lastEventId` |no |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |0..1
+e|lastEventId a|Return events provided after the event with the given `id`; shall not be combined with `timeFrom` |no |string |0..1
 e|serializationModifier a|Content of the event data; _Normal_ or _Reference_ |yes |xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] |1
 e|limit |The maximum size of the result set |no |nonNegativeInteger |0..1
 e|cursor |The position from which to resume a result listing |no |string |0..1
 5+h|Output Parameter
 e|statusCode |Status code |yes |xref:specification/interfaces-payload.adoc#StatusCode[StatusCode] |1
 e|payload |List of events |no |xref:Event[Event] |0..*
-e|pagingMetadata |Information for retrieving the next part of the result set, see xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |no |xref:http-rest-api/http-rest-api.adoc#PagingMetadata[PagingMetadata] |1
 |===
 
 The following rules apply:
@@ -432,6 +437,8 @@ Events of different Identifiables may be provided in a different order than thei
 . Without `lastEventId`, the result starts with the oldest available event that matches the filters.
 With `lastEventId`, it starts with the first matching event provided after the event with this `id`.
 If no event with this `id` is available, the server shall respond with the status code _ClientErrorResourceNotFound_.
+. `timeFrom` and `lastEventId` both determine the start of the result and shall not be combined; otherwise, the server shall respond with the status code _ClientErrorBadRequest_.
+Because events may be provided in a different order than their `time`, only `lastEventId` guarantees that no event is skipped when continuing.
 . A server may remove events after a server-defined period.
 . Access to events is subject to Part 4 xref:bibliography.adoc#bib3[[3\]]; an event shall only be returned if the client may read the complete event data.
 
@@ -443,16 +450,7 @@ To read events provided later, it sends a new request with the `id` of the last 
 [#eventing-interface-http]
 === HTTP/REST Mapping
 
-[%autowidth,width="100%",cols="31%,10%,23%,36%"]
-|===
-h|Operation Name h|HTTP Verb h|REST-Path h|Comment (e.g. optional query parameters)
-|GetAllEvents |GET |/events a|content-suffix: $reference
-
-?type=, ?id=, ?idShortPath=, ?globalAssetId=, ?semanticId=, ?submodelSemanticId=, ?timeFrom=, ?lastEventId=, Pagination
-
-id and globalAssetId are base64url-encoded; semanticId and submodelSemanticId are JSON-serialized and base64url-encoded; idShortPath is URL-encoded; lists are comma-separated
-|===
-
+The mapping of _GetAllEvents_ to the HTTP/REST API is defined in xref:http-rest-api/http-rest-api.adoc#table-mapping-operations[Mapping of Operations].
 The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events.
 
 [#eventing-related-concepts]

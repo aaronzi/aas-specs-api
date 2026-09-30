@@ -14,6 +14,7 @@ Note: Changes in Metamodel (IDTA-01001) will not be listed here, although they h
 Major Changes:
 
 * Added the chapter xref:eventing.adoc[Eventing] defining CloudEvents-based events for modifications of Asset Administration Shells, Submodels, SubmodelElements, Concept Descriptions, and asset links, event profiles, and the new operation `GetAllEvents` (`GET /events`). Added the informative annex xref:annex/eventing-examples.adoc[Eventing Examples].
+* Added the Event profiles AssetAdministrationShellRepositoryServiceSpecification/SSP-007, SubmodelRepositoryServiceSpecification/SSP-008, ConceptDescriptionRepositoryServiceSpecification/SSP-004, and DiscoveryServiceSpecification/SSP-003 with their OpenAPI documents, the schemas `Event`, `GetEventsResult`, and the event data classes in the Part 2 schemas, and the operations `GetAllEvents` and `GetAllEvents-Reference` in the Operation to RIGHT mapping.
 
 == Changes w.r.t. V3.1.3 to V3.2
 
