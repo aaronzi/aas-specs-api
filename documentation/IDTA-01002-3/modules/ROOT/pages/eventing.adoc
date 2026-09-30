@@ -413,34 +413,31 @@ e|globalAssetId a|Return events whose `globalAssetIds` contain the given value |
 e|semanticId a|Return Submodel and SubmodelElement events of objects with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
 e|submodelSemanticId a|Return Submodel, SubmodelElement, and profile events of Submodels with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
 e|timeFrom a|Return events with a `time` at or after the given date |no |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |0..1
+e|lastEventId a|Return events provided after the event with the given `id` |no |string |0..1
 e|serializationModifier a|Content of the event data; _Normal_ or _Reference_ |yes |xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] |1
 e|limit |The maximum size of the result set |no |nonNegativeInteger |0..1
 e|cursor |The position from which to resume a result listing |no |string |0..1
 5+h|Output Parameter
 e|statusCode |Status code |yes |xref:specification/interfaces-payload.adoc#StatusCode[StatusCode] |1
 e|payload |List of events |no |xref:Event[Event] |0..*
-e|pagingMetadata |Cursor for retrieving the subsequent events |no |xref:http-rest-api/http-rest-api.adoc#PagingMetadata[PagingMetadata] |1
+e|pagingMetadata |Information for retrieving the next part of the result set, see xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |no |xref:http-rest-api/http-rest-api.adoc#PagingMetadata[PagingMetadata] |1
 |===
 
 The following rules apply:
 
 . Filters are evaluated on the event independent of the requested Content.
 . Events are returned from the oldest to the most recent, in the order in which the service provides them.
-This order fulfills the ordering rules of <<eventing-modifications-general>> and does not change between requests.
+This order is the deterministic order required by xref:http-rest-api/http-rest-api.adoc#pagination[Pagination], fulfills the ordering rules of <<eventing-modifications-general>>, and does not change between requests.
 Events of different Identifiables may be provided in a different order than their `time`.
-. A request without `cursor` starts with the oldest available event that matches the filters.
-. The result of GetAllEvents is continued by the events of later modifications.
-In deviation from xref:http-rest-api/http-rest-api.adoc#pagination[Pagination], every successful response therefore contains `pagingMetadata` with a `cursor`, also if the response contains the most recent events or no events.
-A request with this `cursor` returns the events provided after the events of the response.
-. A `cursor` shall remain valid as long as the events following it are available.
-A request with a `cursor` shall use the same input parameters, except `limit`, as the request that returned the `cursor`; otherwise, the server shall respond with the status code _ClientErrorBadRequest_.
+. Without `lastEventId`, the result starts with the oldest available event that matches the filters.
+With `lastEventId`, it starts with the first matching event provided after the event with this `id`.
+If no event with this `id` is available, the server shall respond with the status code _ClientErrorResourceNotFound_.
 . A server may remove events after a server-defined period.
-If a `cursor` refers to removed events, the server shall respond with the status code _ClientErrorResourceNotFound_.
 . Access to events is subject to Part 4 xref:bibliography.adoc#bib3[[3\]]; an event shall only be returned if the client may read the complete event data.
 
 ====
-Note: a client continues reading events by storing the `cursor` of the last processed response.
-A separate parameter for the identifier of the last processed event is therefore not required.
+Note: a client reads the available events page by page with `cursor` until the response contains no cursor.
+To read events provided later, it sends a new request with the `id` of the last processed event as `lastEventId`.
 ====
 
 [#eventing-interface-http]
@@ -451,12 +448,12 @@ A separate parameter for the identifier of the last processed event is therefore
 h|Operation Name h|HTTP Verb h|REST-Path h|Comment (e.g. optional query parameters)
 |GetAllEvents |GET |/events a|content-suffix: $reference
 
-?type=, ?id=, ?idShortPath=, ?globalAssetId=, ?semanticId=, ?submodelSemanticId=, ?timeFrom=, Pagination
+?type=, ?id=, ?idShortPath=, ?globalAssetId=, ?semanticId=, ?submodelSemanticId=, ?timeFrom=, ?lastEventId=, Pagination
 
 id and globalAssetId are base64url-encoded; semanticId and submodelSemanticId are JSON-serialized and base64url-encoded; idShortPath is URL-encoded; lists are comma-separated
 |===
 
-The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events and whose `paging_metadata` contains the `cursor`.
+The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events.
 
 [#eventing-related-concepts]
 == Relation to Other Concepts

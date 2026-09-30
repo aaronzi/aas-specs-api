@@ -21,9 +21,9 @@ deactivate SMService
 deactivate App
 
 activate Client
-Client -> EventService : GetAllEvents(submodelSemanticId, cursor)
+Client -> EventService : GetAllEvents(submodelSemanticId, lastEventId)
 activate EventService
-Client <-- EventService : submodelelement.updated ("Measurements.temperature"),\nsubmodel.updated, cursor
+Client <-- EventService : submodelelement.updated ("Measurements.temperature"),\nsubmodel.updated
 deactivate EventService
 
 alt dataschema with Content Normal
