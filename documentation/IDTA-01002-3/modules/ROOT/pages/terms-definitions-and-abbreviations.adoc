@@ -27,6 +27,18 @@ Note: Asset Administration Shell and Administration Shell are used synonymously.
 
 * [SOURCE: IEC 63278-1:2023, note added]
 
+*event*
+
+record of a change of the model content provided by an AAS service, consisting of context attributes and data
+
+*event consumer*
+
+application or service that receives or retrieves events
+
+*event producer*
+
+AAS service that detects changes of its model content and produces events
+
 *interface*
 
 shared boundary between two entities defined by functional characteristics, signal characteristics, or other characteristics as appropriate
@@ -99,6 +111,7 @@ element of a Submodel
 |OPC |Open Packaging Conventions (ECMA-376, ISO/IEC 29500-2)
 |OPCF |OPC Foundation
 |OPC UA |OPC Unified Architecture maintained by the OPC Foundation
+|PCN |Product Change Notification
 |PDF |Portable Document Format
 |RAMI4.0 |Reference Architecture Model Industrie 4.0
 |RDF |Resource Description Framework

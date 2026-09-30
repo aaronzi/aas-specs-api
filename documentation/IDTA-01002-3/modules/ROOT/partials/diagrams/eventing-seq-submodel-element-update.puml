@@ -1,0 +1,44 @@
+@startuml
+
+box "Application Service"
+participant Client as "Application"
+end box
+
+box "Submodel Repository Service"
+  participant SMService as "Submodel Repository Interface"
+end box
+
+box "Delivery"
+  participant Channel as "Event Feed or Message Broker"
+end box
+
+box "Consuming Service"
+  participant Consumer as "Event Consumer"
+end box
+
+activate Client
+Client -> SMService : PatchSubmodelElementValueByPath(submodelId, "Measurements.temperature", 21.4)
+activate SMService
+SMService -> SMService : commit change and derive changed elements
+Client <-- SMService : SuccessNoContent
+SMService -> Channel : io.admin-shell.submodelelement.updated.v1\n(subject "Measurements.temperature")
+SMService -> Channel : io.admin-shell.submodel.updated.v1\n(subject submodelId)
+deactivate SMService
+deactivate Client
+
+Channel -> Consumer : deliver events (push or poll)
+activate Consumer
+
+alt dataschema identifies a Regular payload
+  Consumer -> Consumer : apply SubmodelElement state
+else dataschema identifies a Compact payload
+  Consumer -> SMService : GetSubmodelVersionByIdAndDate(submodelId, time)\nor GetSubmodelElementByPath(submodelId, idShortPath)
+  activate SMService
+  Consumer <-- SMService : Submodel or SubmodelElement
+  deactivate SMService
+  Consumer -> Consumer : apply state
+end
+
+deactivate Consumer
+
+@enduml

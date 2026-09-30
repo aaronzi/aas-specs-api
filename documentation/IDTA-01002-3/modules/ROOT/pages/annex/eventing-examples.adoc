@@ -1,0 +1,821 @@
+////
+Copyright (c) 2023 Industrial Digital Twin Association
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License](
+https://creativecommons.org/licenses/by/4.0/).
+
+SPDX-License-Identifier: CC-BY-4.0
+
+////
+
+[#eventing-examples]
+= Eventing Examples
+
+== General
+
+This annex is informative.
+It contains examples for the events defined in Clause xref:eventing.adoc[Eventing] in both presentations.
+
+All examples use the following objects:
+
+.Objects used in the examples
+[%autowidth,width="100%",cols="30%,70%",options="header",]
+|===
+|Object |Identification
+|Base URL of the producer |`\https://aas.example.com`
+|Asset Administration Shell |`\https://example.com/ids/aas/7600_5912_3951_6917`
+|Asset |`\https://example.com/ids/asset/7600_5912_3951_6917`
+|Submodel |`\https://example.com/ids/sm/4210_0802_6152_5421` with semanticId `\https://example.com/semantics/OperationalData/1/0`, base64url-encoded `aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ`
+|Concept Description |`\https://example.com/ids/cd/temperature`
+|===
+
+Identical parts of the Regular and Compact presentation of the same event are repeated to keep every example complete.
+
+== Asset Administration Shell Events
+
+=== io.admin-shell.aas.created.v1 (Regular)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f4-7c1e-7001-8a3b-5f2c9d1e4b70",
+  "type": "io.admin-shell.aas.created.v1",
+  "source": "https://aas.example.com/shells",
+  "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
+  "time": "2026-09-29T10:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShell": {
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/7600_5912_3951_6917",
+      "idShort": "Pump4711",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/7600_5912_3951_6917"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "referredSemanticId": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+          },
+          "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+        }
+      ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.aas.created.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f4-7c1e-7001-8a3b-5f2c9d1e4b70",
+  "type": "io.admin-shell.aas.created.v1",
+  "source": "https://aas.example.com/shells",
+  "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
+  "time": "2026-09-29T10:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Compact/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShell": {
+      "type": "ModelReference",
+      "keys": [ { "type": "AssetAdministrationShell", "value": "https://example.com/ids/aas/7600_5912_3951_6917" } ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.aas.deleted.v1 (Regular)
+
+The data contains the last state of the Asset Administration Shell before its deletion.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3fa-4d20-7010-9e3c-7a1b2c3d4e5f",
+  "type": "io.admin-shell.aas.deleted.v1",
+  "source": "https://aas.example.com/shells",
+  "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
+  "time": "2026-09-30T14:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShell": {
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/7600_5912_3951_6917",
+      "idShort": "Pump4711",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/7600_5912_3951_6917"
+      }
+    }
+  }
+}
+----
+
+== Submodel Events
+
+=== io.admin-shell.submodel.created.v1 (Regular)
+
+The Submodel is serialized with Content _Metadata_, i.e. without its SubmodelElements.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f4-7c20-7002-8b11-2d3e4f5a6b7c",
+  "type": "io.admin-shell.submodel.created.v1",
+  "source": "https://aas.example.com/submodels",
+  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
+  "time": "2026-09-29T10:00:01.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodel": {
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/4210_0802_6152_5421",
+      "idShort": "OperationalData",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "administration": { "version": "1", "revision": "0" }
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodel.updated.v1 (Regular)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f5-1a04-7004-9c41-0d7e2b6a8f13",
+  "type": "io.admin-shell.submodel.updated.v1",
+  "source": "https://aas.example.com/submodels",
+  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
+  "time": "2026-09-29T10:05:12.345678Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodel": {
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/4210_0802_6152_5421",
+      "idShort": "OperationalData",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "administration": { "version": "1", "revision": "0" }
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodel.updated.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f5-1a04-7004-9c41-0d7e2b6a8f13",
+  "type": "io.admin-shell.submodel.updated.v1",
+  "source": "https://aas.example.com/submodels",
+  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
+  "time": "2026-09-29T10:05:12.345678Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodel.deleted.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3fa-4d10-7009-8d2b-6f7a8b9c0d1e",
+  "type": "io.admin-shell.submodel.deleted.v1",
+  "source": "https://aas.example.com/submodels",
+  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
+  "time": "2026-09-30T13:59:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    }
+  }
+}
+----
+
+== SubmodelElement Events
+
+=== io.admin-shell.submodelelement.created.v1 (Regular)
+
+A SubmodelElementCollection with two Properties was added.
+Only one event is produced; the child elements are part of its data.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f6-2a00-7005-a1b2-3c4d5e6f7a8b",
+  "type": "io.admin-shell.submodelelement.created.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "Maintenance",
+  "time": "2026-09-29T11:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "Maintenance",
+      "value": [
+        { "modelType": "Property", "idShort": "LastServiceDate", "valueType": "xs:date", "value": "2026-09-15" },
+        { "modelType": "Property", "idShort": "ServiceIntervalHours", "valueType": "xs:int", "value": "4000" }
+      ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodelelement.updated.v1 (Regular)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f5-1a03-7003-b2d8-6e1f4c9a0b27",
+  "type": "io.admin-shell.submodelelement.updated.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "Measurements.temperature",
+  "time": "2026-09-29T10:05:12.345678Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "modelType": "Property",
+      "idShort": "temperature",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/ids/cd/temperature" } ]
+      },
+      "valueType": "xs:double",
+      "value": "21.4"
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodelelement.updated.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f5-1a03-7003-b2d8-6e1f4c9a0b27",
+  "type": "io.admin-shell.submodelelement.updated.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "Measurements.temperature",
+  "time": "2026-09-29T10:05:12.345678Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/ids/cd/temperature" } ]
+      },
+      "keys": [
+        { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" },
+        { "type": "SubmodelElementCollection", "value": "Measurements" },
+        { "type": "Property", "value": "temperature" }
+      ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodelelement.updated.v1 for a SubmodelElementList (Compact)
+
+An element was inserted at index 0 of the list `Readings`, which moved all existing elements.
+One event is produced for the list.
+The keys of a Reference to an element in a SubmodelElementList use the index; the list itself is referenced by its idShort.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f7-0b00-7006-8c9d-0e1f2a3b4c5d",
+  "type": "io.admin-shell.submodelelement.updated.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "Readings",
+  "time": "2026-09-29T12:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "type": "ModelReference",
+      "keys": [
+        { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" },
+        { "type": "SubmodelElementList", "value": "Readings" }
+      ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.submodelelement.deleted.v1 (Regular)
+
+The data contains the last state of the SubmodelElement before its removal.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f8-3c00-7007-9d0e-1f2a3b4c5d6e",
+  "type": "io.admin-shell.submodelelement.deleted.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "Measurements.pressure",
+  "time": "2026-09-29T13:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "modelType": "Property",
+      "idShort": "pressure",
+      "valueType": "xs:double",
+      "value": "2.1"
+    }
+  }
+}
+----
+
+=== Presentation Fallback
+
+The following event was requested in the Regular presentation.
+Because the SubmodelElementList `History` exceeds the maximum event size of the delivery channel, the event is delivered in the Compact presentation.
+The consumer recognizes this from the `dataschema` and retrieves the list, e.g. with `GetSubmodelVersionByIdAndDate` and the `time` of the event.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f8-4e00-7008-8e1f-2a3b4c5d6e7f",
+  "type": "io.admin-shell.submodelelement.created.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+  "subject": "History",
+  "time": "2026-09-29T13:30:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "submodelElement": {
+      "type": "ModelReference",
+      "keys": [
+        { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" },
+        { "type": "SubmodelElementList", "value": "History" }
+      ]
+    }
+  }
+}
+----
+
+== Concept Description Events
+
+=== io.admin-shell.conceptdescription.created.v1 (Regular)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f3-0a00-7000-8a1b-2c3d4e5f6a7b",
+  "type": "io.admin-shell.conceptdescription.created.v1",
+  "source": "https://aas.example.com/concept-descriptions",
+  "subject": "https://example.com/ids/cd/temperature",
+  "time": "2026-09-29T09:55:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Regular/3/3",
+  "data": {
+    "conceptDescription": {
+      "modelType": "ConceptDescription",
+      "id": "https://example.com/ids/cd/temperature",
+      "idShort": "Temperature",
+      "embeddedDataSpecifications": [
+        {
+          "dataSpecification": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0" } ]
+          },
+          "dataSpecificationContent": {
+            "modelType": "DataSpecificationIec61360",
+            "preferredName": [ { "language": "en", "text": "Temperature" } ],
+            "unit": "degC",
+            "dataType": "REAL_MEASURE"
+          }
+        }
+      ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.conceptdescription.created.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f3-0a00-7000-8a1b-2c3d4e5f6a7b",
+  "type": "io.admin-shell.conceptdescription.created.v1",
+  "source": "https://aas.example.com/concept-descriptions",
+  "subject": "https://example.com/ids/cd/temperature",
+  "time": "2026-09-29T09:55:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Compact/3/3",
+  "data": {
+    "conceptDescription": {
+      "type": "ModelReference",
+      "keys": [ { "type": "ConceptDescription", "value": "https://example.com/ids/cd/temperature" } ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.conceptdescription.deleted.v1 (Regular)
+
+The data contains the last state of the Concept Description before its deletion.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f6-0b44-7004-8f1a-3c5d7e9b2a61",
+  "type": "io.admin-shell.conceptdescription.deleted.v1",
+  "source": "https://aas.example.com/concept-descriptions",
+  "subject": "https://example.com/ids/cd/temperature",
+  "time": "2026-09-30T10:20:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Regular/3/3",
+  "data": {
+    "conceptDescription": {
+      "modelType": "ConceptDescription",
+      "id": "https://example.com/ids/cd/temperature",
+      "idShort": "Temperature",
+      "embeddedDataSpecifications": [
+        {
+          "dataSpecification": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0" } ]
+          },
+          "dataSpecificationContent": {
+            "modelType": "DataSpecificationIec61360",
+            "preferredName": [ { "language": "en", "text": "Temperature" } ],
+            "unit": "degC",
+            "dataType": "REAL_MEASURE"
+          }
+        }
+      ]
+    }
+  }
+}
+----
+
+== Asset Events
+
+=== io.admin-shell.asset.created.v1 (Regular)
+
+The first Asset Administration Shell was linked to the asset.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f4-7c1f-7011-9a3b-5f2c9d1e4b71",
+  "type": "io.admin-shell.asset.created.v1",
+  "source": "https://aas.example.com/lookup/shells",
+  "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
+  "time": "2026-09-29T10:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShells": [
+      {
+        "type": "ModelReference",
+        "keys": [ { "type": "AssetAdministrationShell", "value": "https://example.com/ids/aas/7600_5912_3951_6917" } ]
+      }
+    ]
+  }
+}
+----
+
+=== io.admin-shell.asset.created.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f4-7c1f-7011-9a3b-5f2c9d1e4b71",
+  "type": "io.admin-shell.asset.created.v1",
+  "source": "https://aas.example.com/lookup/shells",
+  "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
+  "time": "2026-09-29T10:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Compact/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ]
+  }
+}
+----
+
+=== io.admin-shell.asset.updated.v1 (Regular)
+
+A second Asset Administration Shell `\https://example.com/ids/aas/7600_5912_3951_6917_v2` was linked to the asset.
+The data lists all Asset Administration Shells linked after the change.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3f9-2c10-7012-9a4e-1b3d5f7a9c02",
+  "type": "io.admin-shell.asset.updated.v1",
+  "source": "https://aas.example.com/lookup/shells",
+  "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
+  "time": "2026-09-30T08:15:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShells": [
+      {
+        "type": "ModelReference",
+        "keys": [ { "type": "AssetAdministrationShell", "value": "https://example.com/ids/aas/7600_5912_3951_6917" } ]
+      },
+      {
+        "type": "ModelReference",
+        "keys": [ { "type": "AssetAdministrationShell", "value": "https://example.com/ids/aas/7600_5912_3951_6917_v2" } ]
+      }
+    ]
+  }
+}
+----
+
+=== io.admin-shell.asset.deleted.v1 (Regular)
+
+The last Asset Administration Shell was unlinked from the asset.
+The data lists the Asset Administration Shells linked before the change.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3fa-4d21-7013-9e3c-7a1b2c3d4e60",
+  "type": "io.admin-shell.asset.deleted.v1",
+  "source": "https://aas.example.com/lookup/shells",
+  "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
+  "time": "2026-09-30T14:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "data": {
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "assetAdministrationShells": [
+      {
+        "type": "ModelReference",
+        "keys": [ { "type": "AssetAdministrationShell", "value": "https://example.com/ids/aas/7600_5912_3951_6917" } ]
+      }
+    ]
+  }
+}
+----
+
+== Profile Events
+
+=== io.admin-shell.pcn.created.v1 (Regular)
+
+This example belongs to the informative profile of Clause xref:eventing.adoc#eventing-profile-pcn[Example: Product Change Notification].
+The semanticId, the structure of the record, and the data schema identifier are illustrative; they are defined by the respective Submodel template and profile.
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3fb-5e00-7014-8f2a-3b4c5d6e7f80",
+  "type": "io.admin-shell.pcn.created.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vcGNuLzc2MDBfNTkxMg/submodel-elements",
+  "subject": "Records[4]",
+  "time": "2026-09-30T09:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/Profiles/ProductChangeNotification/Regular/1/0",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "0173-1#01-AHE582#003" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "record": {
+      "ChangeId": "PCN-2026-0042",
+      "DateOfRecord": "2026-09-30",
+      "Title": "Discontinuation of variant B",
+      "AffectedPartNumbers": [ "4711-B" ]
+    }
+  }
+}
+----
+
+=== io.admin-shell.pcn.created.v1 (Compact)
+
+[source,json]
+----
+{
+  "specversion": "1.0",
+  "id": "0192a3fb-5e00-7014-8f2a-3b4c5d6e7f80",
+  "type": "io.admin-shell.pcn.created.v1",
+  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vcGNuLzc2MDBfNTkxMg/submodel-elements",
+  "subject": "Records[4]",
+  "time": "2026-09-30T09:00:00.000000Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://admin-shell.io/aas/API/Events/Profiles/ProductChangeNotification/Compact/1/0",
+  "data": {
+    "submodel": {
+      "type": "ModelReference",
+      "referredSemanticId": {
+        "type": "ExternalReference",
+        "keys": [ { "type": "GlobalReference", "value": "0173-1#01-AHE582#003" } ]
+      },
+      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" } ]
+    },
+    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+    "record": {
+      "type": "ModelReference",
+      "keys": [
+        { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" },
+        { "type": "SubmodelElementList", "value": "Records" },
+        { "type": "SubmodelElementCollection", "value": "4" }
+      ]
+    }
+  }
+}
+----
+
+== HTTP Event Feed Response
+
+Response of `GET /events?globalAssetId=aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvYXNzZXQvNzYwMF81OTEyXzM5NTFfNjkxNw&presentation=Compact&limit=2`.
+The events are the Compact presentations of the SubmodelElement and Submodel events of the same change; more events are available with the returned cursor.
+
+[source,json]
+----
+{
+  "paging_metadata": {
+    "cursor": "eyJwIjoxMDQ4fQ"
+  },
+  "result": [
+    {
+      "specversion": "1.0",
+      "id": "0192a3f5-1a03-7003-b2d8-6e1f4c9a0b27",
+      "type": "io.admin-shell.submodelelement.updated.v1",
+      "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
+      "subject": "Measurements.temperature",
+      "time": "2026-09-29T10:05:12.345678Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+      "data": {
+        "submodel": {
+          "type": "ModelReference",
+          "referredSemanticId": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+          },
+          "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+        },
+        "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+        "submodelElement": {
+          "type": "ModelReference",
+          "referredSemanticId": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://example.com/ids/cd/temperature" } ]
+          },
+          "keys": [
+            { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" },
+            { "type": "SubmodelElementCollection", "value": "Measurements" },
+            { "type": "Property", "value": "temperature" }
+          ]
+        }
+      }
+    },
+    {
+      "specversion": "1.0",
+      "id": "0192a3f5-1a04-7004-9c41-0d7e2b6a8f13",
+      "type": "io.admin-shell.submodel.updated.v1",
+      "source": "https://aas.example.com/submodels",
+      "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
+      "time": "2026-09-29T10:05:12.345678Z",
+      "datacontenttype": "application/json",
+      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
+      "data": {
+        "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
+        "submodel": {
+          "type": "ModelReference",
+          "referredSemanticId": {
+            "type": "ExternalReference",
+            "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
+          },
+          "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
+        }
+      }
+    }
+  ]
+}
+----

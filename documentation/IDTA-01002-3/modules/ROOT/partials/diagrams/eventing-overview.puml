@@ -1,0 +1,41 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+left to right direction
+
+actor "AAS Client" as Client
+
+package "AAS Service (Event Producer)" {
+  component "API Operation\n(e.g. PutSubmodelById)" as Operation
+  database "Model Storage" as Storage
+  component "Change Detection\n(state before / after)" as Detection
+  component "Event Builder" as Builder
+}
+
+package "Event" as EventLayer {
+  card "Trigger\ncommitted model change" as Trigger
+  card "Context\nCloudEvents attributes" as Context
+  card "Data\nAAS representations" as Data
+}
+
+package "Notification (transport & security)" as NotificationLayer {
+  component "HTTP Event Feed\n(GetAllEvents)" as Feed
+  component "Message Broker\n(MQTT, Kafka, AMQP, ...)" as Broker
+}
+
+actor "Event Consumer" as Consumer
+
+Client --> Operation : request
+Operation --> Storage : commit change
+Storage ..> Detection : state before / after
+Detection --> Builder : change
+Builder ..> Trigger
+Builder ..> Context
+Builder ..> Data
+Builder --> Feed : event
+Builder --> Broker : event
+Feed <-- Consumer : poll
+Broker --> Consumer : push
+Consumer ..> Operation : resolve reference\n(optional)
+
+@enduml

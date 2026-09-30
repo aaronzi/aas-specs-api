@@ -1,0 +1,59 @@
+@startuml
+!pragma useIntermediatePackages false
+hide circle
+skinparam classAttributeIconSize 0
+hide methods
+
+class CloudEvent {
+  +specversion: string [1]
+  +id: string [1]
+  +source: URI-reference [1]
+  +subject: string [1]
+  +type: string [1]
+  +time: DateTimeUtc [1]
+  +datacontenttype: string [1]
+  +dataschema: URI [1]
+  +data: EventData [1]
+}
+
+abstract class EventData <<abstract>> {
+}
+
+class AssetAdministrationShellEventData {
+  +globalAssetIds: Identifier [0..*]
+  +assetAdministrationShell: AssetAdministrationShell | Reference [1]
+}
+
+class SubmodelEventData {
+  +globalAssetIds: Identifier [0..*]
+  +submodel: Submodel | Reference [1]
+}
+
+class SubmodelElementEventData {
+  +submodel: Reference [1]
+  +globalAssetIds: Identifier [0..*]
+  +submodelElement: SubmodelElement | Reference [1]
+}
+
+class ConceptDescriptionEventData {
+  +conceptDescription: ConceptDescription | Reference [1]
+}
+
+class AssetEventData {
+  +globalAssetIds: Identifier [1]
+  +assetAdministrationShells: Reference [0..*]
+}
+
+CloudEvent *-- "1" EventData : data
+EventData <|-- AssetAdministrationShellEventData
+EventData <|-- SubmodelEventData
+EventData <|-- SubmodelElementEventData
+EventData <|-- ConceptDescriptionEventData
+EventData <|-- AssetEventData
+
+note bottom of SubmodelElementEventData
+  Regular: SubmodelElement (Content Normal)
+  Compact: Reference (Content Reference)
+end note
+
+@enduml
