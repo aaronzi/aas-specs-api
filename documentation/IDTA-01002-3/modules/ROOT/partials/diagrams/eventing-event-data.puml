@@ -5,15 +5,15 @@ skinparam classAttributeIconSize 0
 hide methods
 left to right direction
 
-class CloudEvent {
+class Event {
   +specversion: string [1]
   +id: string [1]
-  +source: URI-reference [1]
+  +source: string [1]
   +subject: string [1]
   +type: string [1]
   +time: DateTimeUtc [1]
   +datacontenttype: string [1]
-  +dataschema: URI [1]
+  +dataschema: string [1]
   +data: EventData [1]
 }
 
@@ -41,20 +41,15 @@ class ConceptDescriptionEventData {
 }
 
 class AssetEventData {
-  +globalAssetIds: Identifier [1]
+  +globalAssetIds: Identifier [1..*]
   +assetAdministrationShells: Reference [0..*]
 }
 
-CloudEvent *-- "1" EventData : data
+Event *-- "1" EventData : data
 EventData <|-- AssetAdministrationShellEventData
 EventData <|-- SubmodelEventData
 EventData <|-- SubmodelElementEventData
 EventData <|-- ConceptDescriptionEventData
 EventData <|-- AssetEventData
-
-note bottom of SubmodelElementEventData
-  Regular: SubmodelElement (Content Normal)
-  Compact: Reference (Content Reference)
-end note
 
 @enduml

@@ -14,7 +14,7 @@ SPDX-License-Identifier: CC-BY-4.0
 == General
 
 This annex is informative.
-It contains examples for the events defined in Clause xref:eventing.adoc[Eventing] in both presentations.
+It contains examples for the events defined in Clause xref:eventing.adoc[Eventing].
 
 All examples use the following objects:
 
@@ -22,18 +22,18 @@ All examples use the following objects:
 [%autowidth,width="100%",cols="30%,70%",options="header",]
 |===
 |Object |Identification
-|Base URL of the producer |`\https://aas.example.com`
+|Base URL of the service |`\https://aas.example.com`
 |Asset Administration Shell |`\https://example.com/ids/aas/7600_5912_3951_6917`
 |Asset |`\https://example.com/ids/asset/7600_5912_3951_6917`
 |Submodel |`\https://example.com/ids/sm/4210_0802_6152_5421` with semanticId `\https://example.com/semantics/OperationalData/1/0`, base64url-encoded `aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ`
 |Concept Description |`\https://example.com/ids/cd/temperature`
 |===
 
-Identical parts of the Regular and Compact presentation of the same event are repeated to keep every example complete.
+Parts that are identical for Content _Normal_ and _Reference_ are repeated to keep every example complete.
 
 == Asset Administration Shell Events
 
-=== io.admin-shell.aas.created.v1 (Regular)
+=== io.admin-shell.aas.created.v1 (Content Normal)
 
 [source,json]
 ----
@@ -45,7 +45,7 @@ Identical parts of the Regular and Compact presentation of the same event are re
   "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
   "time": "2026-09-29T10:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShell": {
@@ -71,7 +71,7 @@ Identical parts of the Regular and Compact presentation of the same event are re
 }
 ----
 
-=== io.admin-shell.aas.created.v1 (Compact)
+=== io.admin-shell.aas.created.v1 (Content Reference)
 
 [source,json]
 ----
@@ -83,7 +83,7 @@ Identical parts of the Regular and Compact presentation of the same event are re
   "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
   "time": "2026-09-29T10:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Reference/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShell": {
@@ -94,7 +94,7 @@ Identical parts of the Regular and Compact presentation of the same event are re
 }
 ----
 
-=== io.admin-shell.aas.deleted.v1 (Regular)
+=== io.admin-shell.aas.deleted.v1 (Content Normal)
 
 The data contains the last state of the Asset Administration Shell before its deletion.
 
@@ -108,7 +108,7 @@ The data contains the last state of the Asset Administration Shell before its de
   "subject": "https://example.com/ids/aas/7600_5912_3951_6917",
   "time": "2026-09-30T14:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetAdministrationShellEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShell": {
@@ -126,21 +126,19 @@ The data contains the last state of the Asset Administration Shell before its de
 
 == Submodel Events
 
-=== io.admin-shell.submodel.created.v1 (Regular)
-
-The Submodel is serialized with Content _Metadata_, i.e. without its SubmodelElements.
+=== io.admin-shell.submodel.updated.v1 (Content Normal)
 
 [source,json]
 ----
 {
   "specversion": "1.0",
-  "id": "0192a3f4-7c20-7002-8b11-2d3e4f5a6b7c",
-  "type": "io.admin-shell.submodel.created.v1",
+  "id": "0192a3f5-1a04-7004-9c41-0d7e2b6a8f13",
+  "type": "io.admin-shell.submodel.updated.v1",
   "source": "https://aas.example.com/submodels",
   "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
-  "time": "2026-09-29T10:00:01.000000Z",
+  "time": "2026-09-29T10:05:12.345678Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "submodel": {
@@ -158,7 +156,7 @@ The Submodel is serialized with Content _Metadata_, i.e. without its SubmodelEle
 }
 ----
 
-=== io.admin-shell.submodel.updated.v1 (Regular)
+=== io.admin-shell.submodel.updated.v1 (Content Reference)
 
 [source,json]
 ----
@@ -170,64 +168,7 @@ The Submodel is serialized with Content _Metadata_, i.e. without its SubmodelEle
   "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
   "time": "2026-09-29T10:05:12.345678Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Regular/3/3",
-  "data": {
-    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
-    "submodel": {
-      "modelType": "Submodel",
-      "id": "https://example.com/ids/sm/4210_0802_6152_5421",
-      "idShort": "OperationalData",
-      "kind": "Instance",
-      "semanticId": {
-        "type": "ExternalReference",
-        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
-      },
-      "administration": { "version": "1", "revision": "0" }
-    }
-  }
-}
-----
-
-=== io.admin-shell.submodel.updated.v1 (Compact)
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3f5-1a04-7004-9c41-0d7e2b6a8f13",
-  "type": "io.admin-shell.submodel.updated.v1",
-  "source": "https://aas.example.com/submodels",
-  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
-  "time": "2026-09-29T10:05:12.345678Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
-  "data": {
-    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
-    "submodel": {
-      "type": "ModelReference",
-      "referredSemanticId": {
-        "type": "ExternalReference",
-        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
-      },
-      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
-    }
-  }
-}
-----
-
-=== io.admin-shell.submodel.deleted.v1 (Compact)
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3fa-4d10-7009-8d2b-6f7a8b9c0d1e",
-  "type": "io.admin-shell.submodel.deleted.v1",
-  "source": "https://aas.example.com/submodels",
-  "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
-  "time": "2026-09-30T13:59:00.000000Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Reference/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "submodel": {
@@ -244,10 +185,10 @@ The Submodel is serialized with Content _Metadata_, i.e. without its SubmodelEle
 
 == SubmodelElement Events
 
-=== io.admin-shell.submodelelement.created.v1 (Regular)
+=== io.admin-shell.submodelelement.created.v1 (Content Normal)
 
 A SubmodelElementCollection with two Properties was added.
-Only one event is produced; the child elements are part of its data.
+The child elements result in no events of their own; they are part of the event data.
 
 [source,json]
 ----
@@ -259,7 +200,7 @@ Only one event is produced; the child elements are part of its data.
   "subject": "Maintenance",
   "time": "2026-09-29T11:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Normal/3/3",
   "data": {
     "submodel": {
       "type": "ModelReference",
@@ -282,7 +223,7 @@ Only one event is produced; the child elements are part of its data.
 }
 ----
 
-=== io.admin-shell.submodelelement.updated.v1 (Regular)
+=== io.admin-shell.submodelelement.updated.v1 (Content Normal)
 
 [source,json]
 ----
@@ -294,7 +235,7 @@ Only one event is produced; the child elements are part of its data.
   "subject": "Measurements.temperature",
   "time": "2026-09-29T10:05:12.345678Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Normal/3/3",
   "data": {
     "submodel": {
       "type": "ModelReference",
@@ -319,7 +260,7 @@ Only one event is produced; the child elements are part of its data.
 }
 ----
 
-=== io.admin-shell.submodelelement.updated.v1 (Compact)
+=== io.admin-shell.submodelelement.updated.v1 (Content Reference)
 
 [source,json]
 ----
@@ -331,7 +272,7 @@ Only one event is produced; the child elements are part of its data.
   "subject": "Measurements.temperature",
   "time": "2026-09-29T10:05:12.345678Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Reference/3/3",
   "data": {
     "submodel": {
       "type": "ModelReference",
@@ -358,10 +299,10 @@ Only one event is produced; the child elements are part of its data.
 }
 ----
 
-=== io.admin-shell.submodelelement.updated.v1 for a SubmodelElementList (Compact)
+=== io.admin-shell.submodelelement.updated.v1 for a SubmodelElementList (Content Reference)
 
-An element was inserted at index 0 of the list `Readings`, which moved all existing elements.
-One event is produced for the list.
+An element was inserted at index 0 of the SubmodelElementList `Readings`, which changed the index of all existing elements.
+The modification results in one event for the SubmodelElementList.
 The keys of a Reference to an element in a SubmodelElementList use the index; the list itself is referenced by its idShort.
 
 [source,json]
@@ -374,7 +315,7 @@ The keys of a Reference to an element in a SubmodelElementList use the index; th
   "subject": "Readings",
   "time": "2026-09-29T12:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Reference/3/3",
   "data": {
     "submodel": {
       "type": "ModelReference",
@@ -396,7 +337,7 @@ The keys of a Reference to an element in a SubmodelElementList use the index; th
 }
 ----
 
-=== io.admin-shell.submodelelement.deleted.v1 (Regular)
+=== io.admin-shell.submodelelement.deleted.v1 (Content Normal)
 
 The data contains the last state of the SubmodelElement before its removal.
 
@@ -410,7 +351,7 @@ The data contains the last state of the SubmodelElement before its removal.
   "subject": "Measurements.pressure",
   "time": "2026-09-29T13:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Normal/3/3",
   "data": {
     "submodel": {
       "type": "ModelReference",
@@ -431,47 +372,9 @@ The data contains the last state of the SubmodelElement before its removal.
 }
 ----
 
-=== Presentation Fallback
-
-The following event was requested in the Regular presentation.
-Because the SubmodelElementList `History` exceeds the maximum event size of the delivery channel, the event is delivered in the Compact presentation.
-The consumer recognizes this from the `dataschema` and retrieves the list, e.g. with `GetSubmodelVersionByIdAndDate` and the `time` of the event.
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3f8-4e00-7008-8e1f-2a3b4c5d6e7f",
-  "type": "io.admin-shell.submodelelement.created.v1",
-  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
-  "subject": "History",
-  "time": "2026-09-29T13:30:00.000000Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
-  "data": {
-    "submodel": {
-      "type": "ModelReference",
-      "referredSemanticId": {
-        "type": "ExternalReference",
-        "keys": [ { "type": "GlobalReference", "value": "https://example.com/semantics/OperationalData/1/0" } ]
-      },
-      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" } ]
-    },
-    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
-    "submodelElement": {
-      "type": "ModelReference",
-      "keys": [
-        { "type": "Submodel", "value": "https://example.com/ids/sm/4210_0802_6152_5421" },
-        { "type": "SubmodelElementList", "value": "History" }
-      ]
-    }
-  }
-}
-----
-
 == Concept Description Events
 
-=== io.admin-shell.conceptdescription.created.v1 (Regular)
+=== io.admin-shell.conceptdescription.created.v1 (Content Normal)
 
 [source,json]
 ----
@@ -483,7 +386,7 @@ The consumer recognizes this from the `dataschema` and retrieves the list, e.g. 
   "subject": "https://example.com/ids/cd/temperature",
   "time": "2026-09-29T09:55:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Normal/3/3",
   "data": {
     "conceptDescription": {
       "modelType": "ConceptDescription",
@@ -508,7 +411,7 @@ The consumer recognizes this from the `dataschema` and retrieves the list, e.g. 
 }
 ----
 
-=== io.admin-shell.conceptdescription.created.v1 (Compact)
+=== io.admin-shell.conceptdescription.created.v1 (Content Reference)
 
 [source,json]
 ----
@@ -520,7 +423,7 @@ The consumer recognizes this from the `dataschema` and retrieves the list, e.g. 
   "subject": "https://example.com/ids/cd/temperature",
   "time": "2026-09-29T09:55:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Reference/3/3",
   "data": {
     "conceptDescription": {
       "type": "ModelReference",
@@ -530,48 +433,9 @@ The consumer recognizes this from the `dataschema` and retrieves the list, e.g. 
 }
 ----
 
-=== io.admin-shell.conceptdescription.deleted.v1 (Regular)
-
-The data contains the last state of the Concept Description before its deletion.
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3f6-0b44-7004-8f1a-3c5d7e9b2a61",
-  "type": "io.admin-shell.conceptdescription.deleted.v1",
-  "source": "https://aas.example.com/concept-descriptions",
-  "subject": "https://example.com/ids/cd/temperature",
-  "time": "2026-09-30T10:20:00.000000Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/ConceptDescriptionEventData/Regular/3/3",
-  "data": {
-    "conceptDescription": {
-      "modelType": "ConceptDescription",
-      "id": "https://example.com/ids/cd/temperature",
-      "idShort": "Temperature",
-      "embeddedDataSpecifications": [
-        {
-          "dataSpecification": {
-            "type": "ExternalReference",
-            "keys": [ { "type": "GlobalReference", "value": "https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0" } ]
-          },
-          "dataSpecificationContent": {
-            "modelType": "DataSpecificationIec61360",
-            "preferredName": [ { "language": "en", "text": "Temperature" } ],
-            "unit": "degC",
-            "dataType": "REAL_MEASURE"
-          }
-        }
-      ]
-    }
-  }
-}
-----
-
 == Asset Events
 
-=== io.admin-shell.asset.created.v1 (Regular)
+=== io.admin-shell.asset.created.v1 (Content Normal)
 
 The first Asset Administration Shell was linked to the asset.
 
@@ -585,7 +449,7 @@ The first Asset Administration Shell was linked to the asset.
   "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
   "time": "2026-09-29T10:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShells": [
@@ -598,7 +462,7 @@ The first Asset Administration Shell was linked to the asset.
 }
 ----
 
-=== io.admin-shell.asset.created.v1 (Compact)
+=== io.admin-shell.asset.created.v1 (Content Reference)
 
 [source,json]
 ----
@@ -610,14 +474,14 @@ The first Asset Administration Shell was linked to the asset.
   "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
   "time": "2026-09-29T10:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Compact/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Reference/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ]
   }
 }
 ----
 
-=== io.admin-shell.asset.updated.v1 (Regular)
+=== io.admin-shell.asset.updated.v1 (Content Normal)
 
 A second Asset Administration Shell `\https://example.com/ids/aas/7600_5912_3951_6917_v2` was linked to the asset.
 The data lists all Asset Administration Shells linked after the change.
@@ -632,7 +496,7 @@ The data lists all Asset Administration Shells linked after the change.
   "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
   "time": "2026-09-30T08:15:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShells": [
@@ -649,7 +513,7 @@ The data lists all Asset Administration Shells linked after the change.
 }
 ----
 
-=== io.admin-shell.asset.deleted.v1 (Regular)
+=== io.admin-shell.asset.deleted.v1 (Content Normal)
 
 The last Asset Administration Shell was unlinked from the asset.
 The data lists the Asset Administration Shells linked before the change.
@@ -664,7 +528,7 @@ The data lists the Asset Administration Shells linked before the change.
   "subject": "https://example.com/ids/asset/7600_5912_3951_6917",
   "time": "2026-09-30T14:00:00.000000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Regular/3/3",
+  "dataschema": "https://admin-shell.io/aas/API/Events/AssetEventData/Normal/3/3",
   "data": {
     "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
     "assetAdministrationShells": [
@@ -677,83 +541,10 @@ The data lists the Asset Administration Shells linked before the change.
 }
 ----
 
-== Profile Events
+== GetAllEvents Response
 
-=== io.admin-shell.pcn.created.v1 (Regular)
-
-This example belongs to the informative profile of Clause xref:eventing.adoc#eventing-profile-pcn[Example: Product Change Notification].
-The semanticId, the structure of the record, and the data schema identifier are illustrative; they are defined by the respective Submodel template and profile.
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3fb-5e00-7014-8f2a-3b4c5d6e7f80",
-  "type": "io.admin-shell.pcn.created.v1",
-  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vcGNuLzc2MDBfNTkxMg/submodel-elements",
-  "subject": "Records[4]",
-  "time": "2026-09-30T09:00:00.000000Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/Profiles/ProductChangeNotification/Regular/1/0",
-  "data": {
-    "submodel": {
-      "type": "ModelReference",
-      "referredSemanticId": {
-        "type": "ExternalReference",
-        "keys": [ { "type": "GlobalReference", "value": "0173-1#01-AHE582#003" } ]
-      },
-      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" } ]
-    },
-    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
-    "record": {
-      "ChangeId": "PCN-2026-0042",
-      "DateOfRecord": "2026-09-30",
-      "Title": "Discontinuation of variant B",
-      "AffectedPartNumbers": [ "4711-B" ]
-    }
-  }
-}
-----
-
-=== io.admin-shell.pcn.created.v1 (Compact)
-
-[source,json]
-----
-{
-  "specversion": "1.0",
-  "id": "0192a3fb-5e00-7014-8f2a-3b4c5d6e7f80",
-  "type": "io.admin-shell.pcn.created.v1",
-  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vcGNuLzc2MDBfNTkxMg/submodel-elements",
-  "subject": "Records[4]",
-  "time": "2026-09-30T09:00:00.000000Z",
-  "datacontenttype": "application/json",
-  "dataschema": "https://admin-shell.io/aas/API/Events/Profiles/ProductChangeNotification/Compact/1/0",
-  "data": {
-    "submodel": {
-      "type": "ModelReference",
-      "referredSemanticId": {
-        "type": "ExternalReference",
-        "keys": [ { "type": "GlobalReference", "value": "0173-1#01-AHE582#003" } ]
-      },
-      "keys": [ { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" } ]
-    },
-    "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
-    "record": {
-      "type": "ModelReference",
-      "keys": [
-        { "type": "Submodel", "value": "https://example.com/ids/sm/pcn/7600_5912" },
-        { "type": "SubmodelElementList", "value": "Records" },
-        { "type": "SubmodelElementCollection", "value": "4" }
-      ]
-    }
-  }
-}
-----
-
-== HTTP Event Feed Response
-
-Response of `GET /events?globalAssetId=aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvYXNzZXQvNzYwMF81OTEyXzM5NTFfNjkxNw&presentation=Compact&limit=2`.
-The events are the Compact presentations of the SubmodelElement and Submodel events of the same change; more events are available with the returned cursor.
+Response of `GET /events/$reference?globalAssetId=aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvYXNzZXQvNzYwMF81OTEyXzM5NTFfNjkxNw&limit=2`.
+The result contains the SubmodelElement event and the Submodel event of the same modification with Content _Reference_; the cursor continues the result.
 
 [source,json]
 ----
@@ -770,7 +561,7 @@ The events are the Compact presentations of the SubmodelElement and Submodel eve
       "subject": "Measurements.temperature",
       "time": "2026-09-29T10:05:12.345678Z",
       "datacontenttype": "application/json",
-      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Compact/3/3",
+      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Reference/3/3",
       "data": {
         "submodel": {
           "type": "ModelReference",
@@ -803,7 +594,7 @@ The events are the Compact presentations of the SubmodelElement and Submodel eve
       "subject": "https://example.com/ids/sm/4210_0802_6152_5421",
       "time": "2026-09-29T10:05:12.345678Z",
       "datacontenttype": "application/json",
-      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Compact/3/3",
+      "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelEventData/Reference/3/3",
       "data": {
         "globalAssetIds": [ "https://example.com/ids/asset/7600_5912_3951_6917" ],
         "submodel": {

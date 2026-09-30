@@ -1,44 +1,40 @@
 @startuml
 
 box "Application Service"
-participant Client as "Application"
+participant App as "Application"
 end box
 
 box "Submodel Repository Service"
   participant SMService as "Submodel Repository Interface"
-end box
-
-box "Delivery"
-  participant Channel as "Event Feed or Message Broker"
+  participant EventService as "Event Interface"
 end box
 
 box "Consuming Service"
-  participant Consumer as "Event Consumer"
+  participant Client as "Client"
 end box
 
-activate Client
-Client -> SMService : PatchSubmodelElementValueByPath(\nsubmodelId, "Measurements.temperature", 21.4)
+activate App
+App -> SMService : PatchSubmodelElementValueByPath(\nsubmodelId, "Measurements.temperature", 21.4)
 activate SMService
-SMService -> SMService : commit change and\nderive changed elements
-Client <-- SMService : SuccessNoContent
-SMService -> Channel : io.admin-shell.submodelelement.updated.v1\n(subject "Measurements.temperature")
-SMService -> Channel : io.admin-shell.submodel.updated.v1\n(subject submodelId)
+App <-- SMService : SuccessNoContent
 deactivate SMService
-deactivate Client
+deactivate App
 
-Channel -> Consumer : deliver events (push or poll)
-activate Consumer
+activate Client
+Client -> EventService : GetAllEvents(submodelSemanticId, cursor)
+activate EventService
+Client <-- EventService : submodelelement.updated ("Measurements.temperature"),\nsubmodel.updated, cursor
+deactivate EventService
 
-alt dataschema identifies a Regular payload
-  Consumer -> Consumer : apply SubmodelElement state
-else dataschema identifies a Compact payload
-  Consumer -> SMService : GetSubmodelVersionByIdAndDate(submodelId, time)\nor GetSubmodelElementByPath(submodelId, idShortPath)
+alt dataschema with Content Normal
+  Client -> Client : use SubmodelElement from event data
+else dataschema with Content Reference
+  Client -> SMService : GetSubmodelVersionByIdAndDate(submodelId, time)
   activate SMService
-  Consumer <-- SMService : Submodel or SubmodelElement
+  Client <-- SMService : Submodel
   deactivate SMService
-  Consumer -> Consumer : apply state
 end
 
-deactivate Consumer
+deactivate Client
 
 @enduml
