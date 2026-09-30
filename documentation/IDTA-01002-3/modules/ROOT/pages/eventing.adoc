@@ -16,11 +16,7 @@ SPDX-License-Identifier: CC-BY-4.0
 [#eventing-general]
 == General
 
-Clients of the interfaces in this specification learn about changes of Asset Administration Shells, Submodels, and Concept Descriptions by requesting them, e.g. with
-xref:specification/interfaces.adoc#GetAllSubmodelsRecentChanges[GetAllSubmodelsRecentChanges].
-Such requests do not reveal deletions or which SubmodelElements have changed, and they detect changes only with the delay of the request interval.
-
-Eventing complements these operations.
+Eventing enables clients to react to modifications of Asset Administration Shells, Submodels, SubmodelElements, Concept Descriptions, and of the link between assets and Asset Administration Shells.
 A service provides an _event_ for every modification of the content it provides.
 An event states which object was modified, how, and when, and it contains the modified object or a Reference to it.
 Typical use cases are:
@@ -31,9 +27,7 @@ Typical use cases are:
 * detecting that an Asset Administration Shell for an asset has become available or has been replaced.
 
 Events are represented according to CloudEvents xref:bibliography.adoc#bib16[[16\]] in the JSON event format xref:bibliography.adoc#bib17[[17\]].
-This chapter defines the events, the modifications that result in events, and the operation _GetAllEvents_ for retrieving events.
-Events may also be transmitted via other protocols using the CloudEvents protocol bindings xref:bibliography.adoc#bib18[[18\]]; such mappings are not defined by this specification.
-The classes _EventElement_ and _EventPayload_ of Part 1 xref:bibliography.adoc#bib1[[1\]] are not used.
+This chapter defines the events, the modifications that result in events, event profiles, and the operation _GetAllEvents_ for retrieving events.
 
 [#eventing-event]
 == Event
@@ -443,6 +437,45 @@ id and globalAssetId are base64url-encoded; semanticId and submodelSemanticId ar
 |===
 
 The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events.
+
+[#eventing-related-concepts]
+== Relation to Other Concepts
+
+[#eventing-related-recent-changes]
+=== Recent Changes
+
+The operations
+xref:specification/interfaces.adoc#GetAllAssetAdministrationShellsRecentChanges[GetAllAssetAdministrationShellsRecentChanges],
+xref:specification/interfaces.adoc#GetAllSubmodelsRecentChanges[GetAllSubmodelsRecentChanges], and
+xref:specification/interfaces.adoc#GetAllConceptDescriptionsRecentChanges[GetAllConceptDescriptionsRecentChanges]
+return Identifiables created or updated after a given point in time, based on their current state.
+They report neither deletions nor modified SubmodelElements, and they return an Identifiable once, regardless of the number of its modifications.
+Events report every modification, including deletions and modifications of SubmodelElements.
+
+[#eventing-related-history]
+=== Versions at a Point in Time
+
+The operations
+xref:specification/interfaces.adoc#GetAssetAdministrationShellVersionByIdAndDate[GetAssetAdministrationShellVersionByIdAndDate] and
+xref:specification/interfaces.adoc#GetSubmodelVersionByIdAndDate[GetSubmodelVersionByIdAndDate]
+return an Identifiable as it was at a given point in time.
+Called with the `time` of an event with Content _Reference_, they return the state described by the event.
+
+[#eventing-related-event-element]
+=== EventElement and EventPayload
+
+Part 1 xref:bibliography.adoc#bib1[[1\]] defines the classes
+link:{mm}/spec-metamodel/submodel-elements.html#EventElement[EventElement],
+link:{mm}/spec-metamodel/submodel-elements.html#BasicEventElement[BasicEventElement], and
+link:{mm}/spec-metamodel/submodel-elements.html#EventPayload[EventPayload].
+They describe events that are declared as part of the model content and refer to a source EventElement.
+The events of this chapter result from modifications of the content provided by a service, independent of the model content, and do not use these classes.
+
+[#eventing-related-protocols]
+=== Other Protocols
+
+This chapter defines the retrieval of events via _GetAllEvents_.
+Events can be transmitted via other protocols, e.g. MQTT, Kafka, or AMQP, using the CloudEvents protocol bindings xref:bibliography.adoc#bib18[[18\]]; such mappings are not defined by this specification.
 
 [#eventing-query-language]
 == Filtering with the AAS Query Language (informative)
