@@ -3,6 +3,7 @@
 hide circle
 skinparam classAttributeIconSize 0
 hide methods
+left to right direction
 
 class CloudEvent {
   +specversion: string [1]

@@ -1,7 +1,6 @@
 @startuml
 skinparam componentStyle rectangle
 skinparam packageStyle rectangle
-left to right direction
 
 actor "AAS Client" as Client
 

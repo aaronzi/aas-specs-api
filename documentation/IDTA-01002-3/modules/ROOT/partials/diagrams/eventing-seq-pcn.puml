@@ -14,9 +14,9 @@ participant Customer as "Procurement Application"
 end box
 
 activate Supplier
-Supplier -> SMService : PostSubmodelElementByPath(pcnSubmodelId, "Records", record)
+Supplier -> SMService : PostSubmodelElementByPath(\npcnSubmodelId, "Records", record)
 activate SMService
-SMService -> SMService : commit change and derive changed elements
+SMService -> SMService : commit change and\nderive changed elements
 Supplier <-- SMService : SuccessCreated
 deactivate Supplier
 

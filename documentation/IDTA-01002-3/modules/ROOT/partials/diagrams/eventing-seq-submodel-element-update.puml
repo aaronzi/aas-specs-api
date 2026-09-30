@@ -17,9 +17,9 @@ box "Consuming Service"
 end box
 
 activate Client
-Client -> SMService : PatchSubmodelElementValueByPath(submodelId, "Measurements.temperature", 21.4)
+Client -> SMService : PatchSubmodelElementValueByPath(\nsubmodelId, "Measurements.temperature", 21.4)
 activate SMService
-SMService -> SMService : commit change and derive changed elements
+SMService -> SMService : commit change and\nderive changed elements
 Client <-- SMService : SuccessNoContent
 SMService -> Channel : io.admin-shell.submodelelement.updated.v1\n(subject "Measurements.temperature")
 SMService -> Channel : io.admin-shell.submodel.updated.v1\n(subject submodelId)

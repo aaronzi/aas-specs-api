@@ -61,7 +61,7 @@ The following topics are out of scope of this version:
 [#eventing-related-concepts]
 === Relation to other Concepts (informative)
 
-*Recent changes.* The operations `GetAll...RecentChanges` return identifiables created or changed after a given point in time.
+*Recent changes.* The operations `+GetAll...RecentChanges+` return identifiables created or changed after a given point in time.
 They are suited for an initial or periodic synchronization.
 Events complement them: they also report deletions and changes of individual SubmodelElements, and they are delivered as soon as the change has been committed.
 
@@ -667,7 +667,7 @@ No order is defined between events with different ordering keys.
 |===
 |Event types |Ordering key
 |`io.admin-shell.aas.*` |Identifier of the AAS
-|`io.admin-shell.submodel.*`, `io.admin-shell.submodelelement.*`, profile events |Identifier of the Submodel
+|`+io.admin-shell.submodel.*+`, `+io.admin-shell.submodelelement.*+`, profile events |Identifier of the Submodel
 |`io.admin-shell.conceptdescription.*` |Identifier of the Concept Description
 |`io.admin-shell.asset.*` |globalAssetId
 |===
