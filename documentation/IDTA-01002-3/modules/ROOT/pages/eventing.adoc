@@ -58,8 +58,8 @@ h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/Event/3/3`
 h|Attribute h|Explanation h|Type h|Card.
 e|specversion a|CloudEvents version; value `1.0` |string |1
 e|id a|Identifier of the event, unique within the scope of `source`, e.g. a UUID xref:bibliography.adoc#bib19[[19\]] |string |1
-e|source a|Collection containing the modified object, see <<eventing-source-subject>> |string (URI-reference) |1
-e|subject a|Modified object within `source`, see <<eventing-source-subject>> |string |1
+e|source a|Base URL of the service, see <<eventing-source-subject>> |string (URI-reference) |1
+e|subject a|Path of the modified object relative to `source`, see <<eventing-source-subject>> |string |1
 e|type a|Event type, see <<eventing-event-types>> |string |1
 e|time a|Point in time at which the modification became effective |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |1
 e|datacontenttype a|Value `application/json` |string |1
@@ -70,30 +70,38 @@ e|data a|Data of the event |xref:EventData[EventData] |1
 The following rules apply:
 
 . All events resulting from the same modification shall have the same `time`.
-. An event with a given `source` and `id` shall always have the same content.
+. An event with a given `source` and `id` shall always have the same context attributes, except `dataschema`, and the same data for the same Content.
 
 [#eventing-source-subject]
 === Source and Subject
 
-The `source` of an event is the URL of the collection resource that contains the modified object in the HTTP/REST API, and the `subject` is the identification of the object within this collection.
-The `subject` is not encoded.
-Appending "/" and the encoded subject to the `source` results in the URL of the modified object, with the encoding defined in xref:http-rest-api/http-rest-api.adoc#design-decisions[Design Decisions].
+The `source` of an event is the base URL of the HTTP/REST API of the service.
+The `subject` is the path of the modified object relative to this base URL, without leading "/".
+Appending "/" and the `subject` to the `source` results in the URL of the modified object; for asset events, it results in the request of xref:specification/interfaces.adoc#GetAllAssetAdministrationShellIdsByAssetLink[GetAllAssetAdministrationShellIdsByAssetLink] for the asset.
 
-.Source and subject
-[%autowidth,width="100%",cols="20%,45%,35%",options="header",]
+.Subject
+[%autowidth,width="100%",cols="20%,80%",options="header",]
 |===
-|Events of |source |subject
-e|AssetAdministrationShell |`\{base}/shells` |Identifier of the Asset Administration Shell
-e|Submodel |`\{base}/submodels` |Identifier of the Submodel
-e|SubmodelElement |`\{base}/submodels/\{submodelIdentifier}/submodel-elements` |link:{mm}/mappings/mappings.html#_format_path_idshortpath_serialization_in_json[idShortPath] of the SubmodelElement
-e|ConceptDescription |`\{base}/concept-descriptions` |Identifier of the Concept Description
-e|Asset |`\{base}/lookup/shells` |link:{mm}/spec-metamodel/core.html#globalAssetId[globalAssetId] of the asset
+|Events of |subject
+e|AssetAdministrationShell |`shells/\{aasIdentifier}`
+e|Submodel |`submodels/\{submodelIdentifier}`
+e|SubmodelElement |`submodels/\{submodelIdentifier}/submodel-elements/\{idShortPath}`
+e|ConceptDescription |`concept-descriptions/\{cdIdentifier}`
+e|Asset |`lookup/shells?assetIds=\{assetLink}`
 |===
 
-`\{base}` is the base URL of the HTTP/REST API of the service.
-The `source` does not depend on the path used for the modification; e.g. a Submodel modified via `/shells/\{aasIdentifier}/submodels/\{submodelIdentifier}` has the `source` `\{base}/submodels`.
-For asset events, the resulting URL is not a resource; the Asset Administration Shells of an asset are returned by
-xref:specification/interfaces.adoc#GetAllAssetAdministrationShellIdsByAssetLink[GetAllAssetAdministrationShellIdsByAssetLink].
+The placeholders are encoded as follows, so that the same object always results in the same `subject`:
+
+* `\{aasIdentifier}`, `\{submodelIdentifier}`, and `\{cdIdentifier}` are the base64url-encoded identifiers without padding, see xref:http-rest-api/http-rest-api.adoc#design-decisions[Design Decisions].
+* `\{idShortPath}` is the link:{mm}/mappings/mappings.html#_format_path_idshortpath_serialization_in_json[idShortPath] of the SubmodelElement, in which `[` is replaced by `%5B` and `]` by `%5D`; no other characters are encoded.
+* `\{assetLink}` is the base64url-encoded, without padding, JSON array containing the single xref:specification/interfaces-payload.adoc#AssetLink[AssetLink] with name `globalAssetId` and the _globalAssetId_ of the asset as value, serialized according to the JSON Canonicalization Scheme xref:bibliography.adoc#bib20[[20\]].
+
+The `subject` does not depend on the path used for the modification; e.g. a Submodel modified via `/shells/\{aasIdentifier}/submodels/\{submodelIdentifier}` has the `subject` `submodels/\{submodelIdentifier}`.
+The `subject` identifies the object and does not depend on the Content of the data; in particular, it does not contain a content-suffix such as `$reference`.
+
+====
+Note: the path prefix of the `subject` of a Submodel, e.g. `submodels/\{submodelIdentifier}/`, is shared by the events of all its SubmodelElements, so that prefix filters select a Submodel together with its SubmodelElements.
+====
 
 [#eventing-event-types]
 === Event Types
@@ -249,8 +257,8 @@ Examples for all event types are given in Annex xref:annex/eventing-examples.ado
   "specversion": "1.0",
   "id": "0192a3f5-1a03-7003-b2d8-6e1f4c9a0b27",
   "type": "io.admin-shell.submodelelement.updated.v1",
-  "source": "https://aas.example.com/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements",
-  "subject": "Measurements.temperature",
+  "source": "https://aas.example.com",
+  "subject": "submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNDIxMF8wODAyXzYxNTJfNTQyMQ/submodel-elements/Measurements.temperature",
   "time": "2026-09-29T10:05:12.345678Z",
   "datacontenttype": "application/json",
   "dataschema": "https://admin-shell.io/aas/API/Events/SubmodelElementEventData/Normal/3/3",
@@ -399,8 +407,8 @@ h|semanticId 4+|`\https://admin-shell.io/aas/API/GetAllEvents/3/3`
 h|Name h|Description h|Mand. h|Type h|Card.
 5+h|Input Parameter
 e|type a|Return events of the given types |no |string |0..*
-e|id a|Return events of the given Identifiables, i.e. AAS, Submodel, and Concept Description events with this `subject`, and SubmodelElement and profile events of the Submodel with this identifier |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|idShortPath a|Return SubmodelElement and profile events whose `subject` is the given idShortPath or starts with it followed by `.` or `[`; requires exactly one `id` |no |string |0..1
+e|id a|Return events of the given Identifiables, i.e. AAS, Submodel, and Concept Description events of the Identifiable with this identifier, and SubmodelElement and profile events of the Submodel with this identifier |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
+e|idShortPath a|Return SubmodelElement and profile events of the SubmodelElement with the given idShortPath and of its child elements; requires exactly one `id` |no |string |0..1
 e|globalAssetId a|Return events whose `globalAssetIds` contain the given value |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
 e|semanticId a|Return Submodel and SubmodelElement events of objects with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
 e|submodelSemanticId a|Return Submodel, SubmodelElement, and profile events of Submodels with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
