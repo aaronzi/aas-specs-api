@@ -319,8 +319,13 @@ Because events may be provided in a different order than their `time`, only `las
 . Access to events is subject to Part 4 xref:bibliography.adoc#bib3[[3\]]; an event shall only be returned if the client may read the complete event data.
 
 ====
-Note: a client reads the available events page by page with `cursor` until the response contains no cursor.
+Note 1: a client reads the available events page by page with `cursor` until the response contains no cursor.
 To read events provided later, it sends a new request with the `id` of the last processed event as `lastEventId`.
+
+Note 2: to initialize a copy of the content of a service and to keep it consistent afterwards, a client determines a point in time `T`, reads the content, and then requests events with `timeFrom` set to `T`.
+Modifications with a `time` before `T` are contained in the content read afterwards, so no modification is missed.
+Events of modifications that are also contained in the content read can be applied again without effect, because events contain the state of the modified object.
+`T` should be chosen with a margin for deviations between the clocks of client and service.
 ====
 
 The mapping of _GetAllEvents_ to the HTTP/REST API is defined in xref:http-rest-api/http-rest-api.adoc#table-mapping-operations[Mapping of Operations].

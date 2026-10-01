@@ -1473,6 +1473,7 @@ components:
               - "https://admin-shell.io/aas/API/3/1/DiscoveryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/2/DiscoveryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/2/DiscoveryServiceSpecification/SSP-002"
+              - "https://admin-shell.io/aas/API/3/3/DiscoveryServiceSpecification/SSP-003"
               - "https://admin-shell.io/aas/API/3/0/AssetAdministrationShellRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/1/AssetAdministrationShellRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellRepositoryServiceSpecification/SSP-001"
@@ -1481,6 +1482,7 @@ components:
               - "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellRepositoryServiceSpecification/SSP-002"
               - "https://admin-shell.io/aas/API/3/1/AssetAdministrationShellRepositoryServiceSpecification/SSP-003"
               - "https://admin-shell.io/aas/API/3/2/AssetAdministrationShellRepositoryServiceSpecification/SSP-003"
+              - "https://admin-shell.io/aas/API/3/3/AssetAdministrationShellRepositoryServiceSpecification/SSP-007"
               - "https://admin-shell.io/aas/API/3/0/SubmodelRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/1/SubmodelRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/2/SubmodelRepositoryServiceSpecification/SSP-001"
@@ -1495,11 +1497,13 @@ components:
               - "https://admin-shell.io/aas/API/3/2/SubmodelRepositoryServiceSpecification/SSP-004"
               - "https://admin-shell.io/aas/API/3/1/SubmodelRepositoryServiceSpecification/SSP-005"
               - "https://admin-shell.io/aas/API/3/2/SubmodelRepositoryServiceSpecification/SSP-005"
+              - "https://admin-shell.io/aas/API/3/3/SubmodelRepositoryServiceSpecification/SSP-008"
               - "https://admin-shell.io/aas/API/3/0/ConceptDescriptionRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/1/ConceptDescriptionRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/2/ConceptDescriptionRepositoryServiceSpecification/SSP-001"
               - "https://admin-shell.io/aas/API/3/1/ConceptDescriptionRepositoryServiceSpecification/SSP-002"
               - "https://admin-shell.io/aas/API/3/2/ConceptDescriptionRepositoryServiceSpecification/SSP-002"
+              - "https://admin-shell.io/aas/API/3/3/ConceptDescriptionRepositoryServiceSpecification/SSP-004"
       type: object
     SpecificAssetIdValue:
       type: object
