@@ -646,6 +646,121 @@ e|supplementalSemanticId a|Identifier of a supplemental semantic definition of t
 |===
 
 
+[[events]]
+== Events
+
+The following classes describe events as defined in Clause xref:eventing.adoc[Eventing].
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[Event]]Event
+h|Explanation 3+a|Modification of the content provided by a service, serialized as CloudEvent in the JSON event format.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|--
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/Event/3/3`
+
+h|Attribute h|Explanation h|Type h|Card.
+e|specversion a|CloudEvents version; value `1.0` |string |1
+e|id a|Identifier of the event, unique within the scope of `source`, e.g. a UUID xref:bibliography.adoc#bib19[[19\]] |string |1
+e|source a|Base URL of the service, see xref:eventing.adoc#eventing-source-subject[Source and Subject] |string (URI-reference) |1
+e|subject a|Path of the modified object relative to `source`, see xref:eventing.adoc#eventing-source-subject[Source and Subject] |string |1
+e|type a|Event type, see xref:eventing.adoc#eventing-event-types[Event Types] |string |1
+e|time a|Point in time at which the modification became effective |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |1
+e|datacontenttype a|Value `application/json` |string |1
+e|dataschema a|Identifier of the class and Content of `data`, see xref:eventing.adoc#eventing-data-schemas[Data Schemas] |string (URI) |1
+e|data a|Data of the event |xref:EventData[EventData] |1
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[EventData]]EventData \<<abstract>>
+h|Explanation 3+a|Data of an event.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|--
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/EventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+4+|--
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[AssetAdministrationShellEventData]]AssetAdministrationShellEventData
+h|Explanation 3+a|Data of an event of type `io.admin-shell.aas.<modification>.v1`.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|xref:EventData[EventData]
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/AssetAdministrationShellEventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+e|globalAssetIds a|_globalAssetId_ of the Asset Administration Shell, if set; at most one entry |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
+e|assetAdministrationShell a|Asset Administration Shell (Content _Normal_) or ModelReference to it (Content _Reference_) |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/core.html#AssetAdministrationShell[AssetAdministrationShell] or link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |1
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[SubmodelEventData]]SubmodelEventData
+h|Explanation 3+a|Data of an event of type `io.admin-shell.submodel.<modification>.v1`.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|xref:EventData[EventData]
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/SubmodelEventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+e|globalAssetIds a|_globalAssetIds_ of the Asset Administration Shells referencing the Submodel |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
+e|submodel a|Submodel with Content _Metadata_ (Content _Normal_) or ModelReference to it (Content _Reference_) |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/core.html#Submodel[Submodel] or link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |1
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[SubmodelElementEventData]]SubmodelElementEventData
+h|Explanation 3+a|Data of an event of type `io.admin-shell.submodelelement.<modification>.v1`.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|xref:EventData[EventData]
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/SubmodelElementEventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+e|submodel a|ModelReference to the Submodel containing the SubmodelElement |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |1
+e|globalAssetIds a|_globalAssetIds_ of the Asset Administration Shells referencing the Submodel |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
+e|submodelElement a|SubmodelElement (Content _Normal_) or ModelReference to it (Content _Reference_) |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/core.html#SubmodelElement[SubmodelElement] or link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |1
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[ConceptDescriptionEventData]]ConceptDescriptionEventData
+h|Explanation 3+a|Data of an event of type `io.admin-shell.conceptdescription.<modification>.v1`.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|xref:EventData[EventData]
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/ConceptDescriptionEventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+e|conceptDescription a|Concept Description (Content _Normal_) or ModelReference to it (Content _Reference_) |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/concept-description.html#ConceptDescription[ConceptDescription] or link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |1
+|===
+
+[.table-with-appendix-table]
+[cols="25%,40%,25%,10%"]
+|===
+h|Class Name 3+e|[[AssetEventData]]AssetEventData
+h|Explanation 3+a|Data of an event of type `io.admin-shell.asset.<modification>.v1`.
+
+This class is not part of the metamodel.
+h|Inherits from 3+|xref:EventData[EventData]
+h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/AssetEventData/3/3`
+h|Attribute h|Explanation h|Type h|Card.
+e|globalAssetIds a|_globalAssetId_ of the asset; exactly one entry |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#Identifier[Identifier] |1..*
+e|assetAdministrationShells a|Content _Normal_ only: ModelReferences to the Asset Administration Shells linked to the asset after the modification; for _deleted_ events, before the modification |link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/referencing.html#Reference[Reference] |0..*
+|===
+
+====
+Note: `globalAssetIds` is a list in all classes to allow a uniform JSON path for filtering.
+====
+
+
 == Simple Data Types
 
 All simple data types from link:https://industrialdigitaltwin.io/aas-specifications/IDTA-01001/v3.2/spec-metamodel/datatypes.html#predefined_simple_data_types[Part 1] xref:bibliography.adoc#bib1[[1\]] apply also to the specifications described in this document.

@@ -45,27 +45,7 @@ The attributes of _Event_ are the CloudEvents context attributes and the data; C
 include::partial$diagrams/eventing-event-data.puml[]
 ....
 
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[Event]]Event
-h|Explanation 3+a|Modification of the content provided by a service, serialized as CloudEvent in the JSON event format.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|--
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/Event/3/3`
-
-h|Attribute h|Explanation h|Type h|Card.
-e|specversion a|CloudEvents version; value `1.0` |string |1
-e|id a|Identifier of the event, unique within the scope of `source`, e.g. a UUID xref:bibliography.adoc#bib19[[19\]] |string |1
-e|source a|Base URL of the service, see <<eventing-source-subject>> |string (URI-reference) |1
-e|subject a|Path of the modified object relative to `source`, see <<eventing-source-subject>> |string |1
-e|type a|Event type, see <<eventing-event-types>> |string |1
-e|time a|Point in time at which the modification became effective |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |1
-e|datacontenttype a|Value `application/json` |string |1
-e|dataschema a|Identifier of the class and Content of `data`, see <<eventing-data-schemas>> |string (URI) |1
-e|data a|Data of the event |xref:EventData[EventData] |1
-|===
+The class _Event_ and the event data classes are defined in Clause xref:specification/interfaces-payload.adoc#events[Events].
 
 The following rules apply:
 
@@ -113,11 +93,11 @@ The `type` of an event has the form `io.admin-shell.<object>.<modification>.v1` 
 [%autowidth,width="100%",cols="22%,28%,50%",options="header",]
 |===
 |<object> |<modification> |data
-|`aas` |`created`, `updated`, `deleted` |xref:AssetAdministrationShellEventData[AssetAdministrationShellEventData]
-|`submodel` |`created`, `updated`, `deleted` |xref:SubmodelEventData[SubmodelEventData]
-|`submodelelement` |`created`, `updated`, `deleted` |xref:SubmodelElementEventData[SubmodelElementEventData]
-|`conceptdescription` |`created`, `updated`, `deleted` |xref:ConceptDescriptionEventData[ConceptDescriptionEventData]
-|`asset` |`created`, `updated`, `deleted` |xref:AssetEventData[AssetEventData]
+|`aas` |`created`, `updated`, `deleted` |xref:specification/interfaces-payload.adoc#AssetAdministrationShellEventData[AssetAdministrationShellEventData]
+|`submodel` |`created`, `updated`, `deleted` |xref:specification/interfaces-payload.adoc#SubmodelEventData[SubmodelEventData]
+|`submodelelement` |`created`, `updated`, `deleted` |xref:specification/interfaces-payload.adoc#SubmodelElementEventData[SubmodelElementEventData]
+|`conceptdescription` |`created`, `updated`, `deleted` |xref:specification/interfaces-payload.adoc#ConceptDescriptionEventData[ConceptDescriptionEventData]
+|`asset` |`created`, `updated`, `deleted` |xref:specification/interfaces-payload.adoc#AssetEventData[AssetEventData]
 |===
 
 Further event types may be defined by event profiles, see <<eventing-profiles>>.
@@ -147,92 +127,7 @@ This does not apply to References that are part of a serialized AssetAdministrat
 The `globalAssetIds` of Submodel and SubmodelElement events are the _globalAssetIds_ of all Asset Administration Shells provided by the same service that reference the Submodel at the time of the modification.
 Changes of these references result in AAS events, not in Submodel events.
 
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[EventData]]EventData \<<abstract>>
-h|Explanation 3+a|Data of an event.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|--
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/EventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-4+|--
-|===
-
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[AssetAdministrationShellEventData]]AssetAdministrationShellEventData
-h|Explanation 3+a|Data of an event of type `io.admin-shell.aas.<modification>.v1`.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|xref:EventData[EventData]
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/AssetAdministrationShellEventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-e|globalAssetIds a|_globalAssetId_ of the Asset Administration Shell, if set; at most one entry |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|assetAdministrationShell a|Asset Administration Shell (Content _Normal_) or ModelReference to it (Content _Reference_) |link:{mm}/spec-metamodel/core.html#AssetAdministrationShell[AssetAdministrationShell] or link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |1
-|===
-
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[SubmodelEventData]]SubmodelEventData
-h|Explanation 3+a|Data of an event of type `io.admin-shell.submodel.<modification>.v1`.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|xref:EventData[EventData]
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/SubmodelEventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-e|globalAssetIds a|_globalAssetIds_ of the Asset Administration Shells referencing the Submodel |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|submodel a|Submodel with Content _Metadata_ (Content _Normal_) or ModelReference to it (Content _Reference_) |link:{mm}/spec-metamodel/core.html#Submodel[Submodel] or link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |1
-|===
-
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[SubmodelElementEventData]]SubmodelElementEventData
-h|Explanation 3+a|Data of an event of type `io.admin-shell.submodelelement.<modification>.v1`.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|xref:EventData[EventData]
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/SubmodelElementEventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-e|submodel a|ModelReference to the Submodel containing the SubmodelElement |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |1
-e|globalAssetIds a|_globalAssetIds_ of the Asset Administration Shells referencing the Submodel |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|submodelElement a|SubmodelElement (Content _Normal_) or ModelReference to it (Content _Reference_) |link:{mm}/spec-metamodel/core.html#SubmodelElement[SubmodelElement] or link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |1
-|===
-
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[ConceptDescriptionEventData]]ConceptDescriptionEventData
-h|Explanation 3+a|Data of an event of type `io.admin-shell.conceptdescription.<modification>.v1`.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|xref:EventData[EventData]
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/ConceptDescriptionEventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-e|conceptDescription a|Concept Description (Content _Normal_) or ModelReference to it (Content _Reference_) |link:{mm}/spec-metamodel/concept-description.html#ConceptDescription[ConceptDescription] or link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |1
-|===
-
-[.table-with-appendix-table]
-[cols="25%,40%,25%,10%"]
-|===
-h|Class Name 3+e|[[AssetEventData]]AssetEventData
-h|Explanation 3+a|Data of an event of type `io.admin-shell.asset.<modification>.v1`.
-
-This class is not part of the metamodel.
-h|Inherits from 3+|xref:EventData[EventData]
-h|semanticId 3+|`\https://admin-shell.io/aas/API/DataTypes/AssetEventData/3/3`
-h|Attribute h|Explanation h|Type h|Card.
-e|globalAssetIds a|_globalAssetId_ of the asset; exactly one entry |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |1..*
-e|assetAdministrationShells a|Content _Normal_ only: ModelReferences to the Asset Administration Shells linked to the asset after the modification; for _deleted_ events, before the modification |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
-|===
-
-====
-Note: `globalAssetIds` is a list in all classes to allow a uniform JSON path for filtering.
-====
+The event data classes are defined in Clause xref:specification/interfaces-payload.adoc#events[Events].
 
 [#eventing-data-schemas]
 === Data Schemas
@@ -390,43 +285,15 @@ An event profile shall define
 
 Profile events are provided in addition to the events of <<eventing-modifications>>, and precede the Submodel event of the same modification.
 
-[#eventing-interface]
-== Event Interface
+[#eventing-retrieval]
+== Retrieval of Events
 
-[#eventing-interface-operations]
-=== Operation GetAllEvents
-
-The operation _GetAllEvents_ is provided by the Event profiles of the
+Events are retrieved with the operation xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents] of the xref:specification/interfaces.adoc#event-interface[Event Interface].
+The operation is provided by the Event profiles of the
 xref:http-rest-api/service-specifications-and-profiles.adoc#asset-administration-shell-repository-service-specification-ssp-007[Asset Administration Shell Repository],
 xref:http-rest-api/service-specifications-and-profiles.adoc#submodel-repository-service-specification-ssp-008[Submodel Repository],
 xref:http-rest-api/service-specifications-and-profiles.adoc#concept-description-repository-service-specification-ssp-004[Concept Description Repository], and
 xref:http-rest-api/service-specifications-and-profiles.adoc#discovery-service-specification-ssp-003[Discovery] service specifications.
-
-[.table-with-appendix-table]
-[width=100%,cols="25%,35%,10%,20%,10%"]
-|===
-h|Operation Name 4+e|[[GetAllEvents]]GetAllEvents
-h|Explanation 4+a|Returns the events provided by the service.
-Different input parameters are evaluated with AND semantics; the values of one input parameter with OR semantics.
-h|semanticId 4+|`\https://admin-shell.io/aas/API/GetAllEvents/3/3`
-
-h|Name h|Description h|Mand. h|Type h|Card.
-5+h|Input Parameter
-e|type a|Return events of the given types |no |string |0..*
-e|id a|Return events of the given Identifiables, i.e. AAS, Submodel, and Concept Description events of the Identifiable with this identifier, and SubmodelElement and profile events of the Submodel with this identifier |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|idShortPath a|Return SubmodelElement and profile events of the SubmodelElement with the given idShortPath and of its child elements; requires exactly one `id` |no |string |0..1
-e|globalAssetId a|Return events whose `globalAssetIds` contain the given value |no |link:{mm}/spec-metamodel/datatypes.html#Identifier[Identifier] |0..*
-e|semanticId a|Return Submodel and SubmodelElement events of objects with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
-e|submodelSemanticId a|Return Submodel, SubmodelElement, and profile events of Submodels with the given _semanticId_ or _supplementalSemanticId_ |no |link:{mm}/spec-metamodel/referencing.html#Reference[Reference] |0..*
-e|timeFrom a|Return events with a `time` at or after the given date; shall not be combined with `lastEventId` |no |link:{mm}/spec-metamodel/datatypes.html#DateTimeUtc[DateTimeUtc] |0..1
-e|lastEventId a|Return events provided after the event with the given `id`; shall not be combined with `timeFrom` |no |string |0..1
-e|serializationModifier a|Content of the event data; _Normal_ or _Reference_ |yes |xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] |1
-e|limit |The maximum size of the result set |no |nonNegativeInteger |0..1
-e|cursor |The position from which to resume a result listing |no |string |0..1
-5+h|Output Parameter
-e|statusCode |Status code |yes |xref:specification/interfaces-payload.adoc#StatusCode[StatusCode] |1
-e|payload |List of events |no |xref:Event[Event] |0..*
-|===
 
 The following rules apply:
 
@@ -446,9 +313,6 @@ Because events may be provided in a different order than their `time`, only `las
 Note: a client reads the available events page by page with `cursor` until the response contains no cursor.
 To read events provided later, it sends a new request with the `id` of the last processed event as `lastEventId`.
 ====
-
-[#eventing-interface-http]
-=== HTTP/REST Mapping
 
 The mapping of _GetAllEvents_ to the HTTP/REST API is defined in xref:http-rest-api/http-rest-api.adoc#table-mapping-operations[Mapping of Operations].
 The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events.
@@ -498,7 +362,7 @@ Events can be transmitted via other protocols, e.g. MQTT, Kafka, or AMQP, using 
 [IMPORTANT]
 ====
 *This clause is a proposal and not part of this specification.*
-The normative filters are the input parameters of xref:GetAllEvents[GetAllEvents].
+The normative filters are the input parameters of xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents].
 ====
 
 The xref:query-language.adoc[AAS Query Language] could be extended by a root element `$event` for FieldIdentifiers, e.g. `$event#type`, `$event#subject`, `$event#time`, `$event#globalAssetIds[]`, `$event#semanticId`, and `$event#submodelSemanticId`.

@@ -83,7 +83,7 @@ components:
       description: Returns events whose globalAssetIds contain one of the given globalAssetIds (UTF8-BASE64-URL-encoded)
       required: false
       style: form
-      explode: false
+      explode: true
       schema:
         type: array
         items:
@@ -101,7 +101,7 @@ components:
       description: Returns events of the Identifiables with the given identifiers (UTF8-BASE64-URL-encoded), including SubmodelElement and profile events of Submodels with these identifiers
       required: false
       style: form
-      explode: false
+      explode: true
       schema:
         type: array
         items:
@@ -112,7 +112,7 @@ components:
       description: Returns Submodel and SubmodelElement events of objects with one of the given semanticIds or supplementalSemanticIds (JSON-serialized References, BASE64-URL-encoded)
       required: false
       style: form
-      explode: false
+      explode: true
       schema:
         type: array
         items:
@@ -125,7 +125,7 @@ components:
       description: Returns Submodel, SubmodelElement, and profile events of Submodels with one of the given semanticIds or supplementalSemanticIds (JSON-serialized References, BASE64-URL-encoded)
       required: false
       style: form
-      explode: false
+      explode: true
       schema:
         type: array
         items:
@@ -146,7 +146,7 @@ components:
       description: Returns events of the given event types
       required: false
       style: form
-      explode: false
+      explode: true
       schema:
         type: array
         items:

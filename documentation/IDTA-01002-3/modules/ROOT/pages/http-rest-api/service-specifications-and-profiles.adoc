@@ -746,12 +746,11 @@ h|Profile Identifier: |`\https://admin-shell.io/aas/API/3/3/DiscoveryServiceSpec
 h|Feature h|Appearance
 |API and API Operations a|
 _Event API:_ +
-xref:eventing.adoc#GetAllEvents[GetAllEvents]
+xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents]
 
 _Description API:_ +
 xref:specification/interfaces.adoc#GetSelfDescription[GetDescription]
-|Event types a|`+io.admin-shell.asset.*+`
-|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: _Normal_, _Reference_
+|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: Normal, Reference
 |SerializationFormat |JSON
 |xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |supported
 |===
@@ -1033,12 +1032,11 @@ h|Profile Identifier: |`\https://admin-shell.io/aas/API/3/3/AssetAdministrationS
 h|Feature h|Appearance
 |API and API Operations a|
 _Event API:_ +
-xref:eventing.adoc#GetAllEvents[GetAllEvents]
+xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents]
 
 _Description API:_ +
 xref:specification/interfaces.adoc#GetSelfDescription[GetDescription]
-|Event types a|`+io.admin-shell.aas.*+`, `+io.admin-shell.asset.*+`
-|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: _Normal_, _Reference_
+|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: Normal, Reference
 |SerializationFormat |JSON
 |xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |supported
 |===
@@ -1352,12 +1350,11 @@ h|Profile Identifier: |`\https://admin-shell.io/aas/API/3/3/SubmodelRepositorySe
 h|Feature h|Appearance
 |API and API Operations a|
 _Event API:_ +
-xref:eventing.adoc#GetAllEvents[GetAllEvents]
+xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents]
 
 _Description API:_ +
 xref:specification/interfaces.adoc#GetSelfDescription[GetDescription]
-|Event types a|`+io.admin-shell.submodel.*+`, `+io.admin-shell.submodelelement.*+`, and event types of event profiles
-|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: _Normal_, _Reference_
+|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: Normal, Reference
 |SerializationFormat |JSON
 |xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |supported
 |===
@@ -1467,12 +1464,11 @@ h|Profile Identifier: |`\https://admin-shell.io/aas/API/3/3/ConceptDescriptionRe
 h|Feature h|Appearance
 |API and API Operations a|
 _Event API:_ +
-xref:eventing.adoc#GetAllEvents[GetAllEvents]
+xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents]
 
 _Description API:_ +
 xref:specification/interfaces.adoc#GetSelfDescription[GetDescription]
-|Event types a|`+io.admin-shell.conceptdescription.*+`
-|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: _Normal_, _Reference_
+|xref:specification/interfaces-operation-parameters.adoc#SerializationModifier[SerializationModifier] a|Content: Normal, Reference
 |SerializationFormat |JSON
 |xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] |supported
 |===
