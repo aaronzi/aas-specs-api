@@ -16,9 +16,9 @@ SPDX-License-Identifier: CC-BY-4.0
 [#eventing-general]
 == General
 
-Eventing enables clients to react to modifications of Asset Administration Shells, Submodels, SubmodelElements, Concept Descriptions, and of the link between assets and Asset Administration Shells.
-A service provides an _event_ for every modification of the content it provides.
-An event states which object was modified, how, and when, and it contains the modified object or a Reference to it.
+Eventing enables clients to react to modifications of Asset Administration Shells, Submodels, SubmodelElements, Concept Descriptions, and asset links.
+For every modification of its content, a service provides an _event_.
+An event identifies the modified object, the kind of modification, and its time, and contains either the modified object or a Reference to it.
 Typical use cases are:
 
 * informing customers about a new record in a Submodel with Product Change Notifications of a supplier,
