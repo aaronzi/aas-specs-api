@@ -21,13 +21,19 @@ For every modification of its content, a service provides an _event_.
 An event identifies the modified object, the kind of modification, and its time, and contains either the modified object or a Reference to it.
 Typical use cases are:
 
-* informing customers about a new record in a Submodel with Product Change Notifications of a supplier,
-* keeping replicas, caches, and search indexes consistent with a repository,
-* observing individual values, e.g. a measured temperature,
-* detecting that an Asset Administration Shell for an asset has become available or has been replaced.
+* *New products:* a provider informs its customers about new Asset Administration Shells and Submodels, e.g. new components in a product portfolio.
+Each receiver decides, e.g. by the semanticIds of the Submodels, whether to retrieve them.
+* *New aspects of existing products:* a provider adds Submodels to existing Asset Administration Shells, e.g. a carbon footprint or a new version of a Submodel template.
+* *Updated product data:* a provider adds or changes SubmodelElements of existing Submodels, e.g. technical data.
+* *Notifications with domain-specific semantics:* a provider adds a record to a Submodel, e.g. a product change notification, that receivers route to a dedicated application and process without retrieving the complete Submodel.
+* *Monitoring:* a client observes values of SubmodelElements, e.g. to detect that a measured value exceeds a threshold.
+* *Synchronization:* systems such as engineering tools, product configurators, PLM, and ERP systems, as well as replicas, caches, and search indexes, keep their data consistent with a service.
+* *Asset links:* a client detects that an Asset Administration Shell for an asset has become available or has been replaced.
+
+In these use cases, one provider informs one or many receivers, within seconds or within the interval in which receivers retrieve events.
 
 Events are represented according to CloudEvents xref:bibliography.adoc#bib16[[16\]] in the JSON event format xref:bibliography.adoc#bib17[[17\]].
-This chapter defines the events, the modifications that result in events, event profiles, and the operation _GetAllEvents_ for retrieving events.
+This chapter defines the events, the modifications that result in events, event profiles, the operation _GetAllEvents_ for retrieving events, and the transmission of events via message brokers.
 
 [#eventing-event]
 == Event
@@ -288,6 +294,9 @@ Profile events are provided in addition to the events of <<eventing-modification
 [#eventing-retrieval]
 == Retrieval of Events
 
+[#eventing-retrieval-getallevents]
+=== GetAllEvents
+
 Events are retrieved with the operation xref:specification/interfaces.adoc#GetAllEvents[GetAllEvents] of the xref:specification/interfaces.adoc#event-interface[Event Interface].
 The operation is provided by the Event profiles of the
 xref:http-rest-api/service-specifications-and-profiles.adoc#asset-administration-shell-repository-service-specification-ssp-007[Asset Administration Shell Repository],
@@ -316,6 +325,21 @@ To read events provided later, it sends a new request with the `id` of the last 
 
 The mapping of _GetAllEvents_ to the HTTP/REST API is defined in xref:http-rest-api/http-rest-api.adoc#table-mapping-operations[Mapping of Operations].
 The response is a Result object according to xref:http-rest-api/http-rest-api.adoc#pagination[Pagination] whose `result` contains the events.
+
+[#eventing-retrieval-brokers]
+=== Message Brokers
+
+In addition to _GetAllEvents_, a service may transmit its events via message brokers, e.g. via MQTT, Apache Kafka, or AMQP.
+Message brokers deliver events to receivers as soon as they are provided and distribute them to many receivers.
+The following rules apply:
+
+. Events transmitted via a message broker shall be represented according to the CloudEvents protocol binding of the respective protocol xref:bibliography.adoc#bib18[[18\]].
+. An event transmitted via a message broker shall be identical to the event with the same `source` and `id` provided by _GetAllEvents_ with the same Content.
+. The ordering rules of <<eventing-modifications-general>> apply to each topic or partition that contains events of the same Identifiable.
+
+====
+Note: topic names, the selection of events per topic, the Content of the event data, quality of service, and access control are configured for the message broker and are not defined by this specification.
+====
 
 [#eventing-related-concepts]
 == Relation to Other Concepts
@@ -349,12 +373,6 @@ link:{mm}/spec-metamodel/submodel-elements.html#BasicEventElement[BasicEventElem
 link:{mm}/spec-metamodel/submodel-elements.html#EventPayload[EventPayload].
 They describe events that are declared as part of the model content and refer to a source EventElement.
 The events of this chapter result from modifications of the content provided by a service, independent of the model content, and do not use these classes.
-
-[#eventing-related-protocols]
-=== Other Protocols
-
-This chapter defines the retrieval of events via _GetAllEvents_.
-Events can be transmitted via other protocols, e.g. MQTT, Kafka, or AMQP, using the CloudEvents protocol bindings xref:bibliography.adoc#bib18[[18\]]; such mappings are not defined by this specification.
 
 [#eventing-query-language]
 == Filtering with the AAS Query Language (informative)
